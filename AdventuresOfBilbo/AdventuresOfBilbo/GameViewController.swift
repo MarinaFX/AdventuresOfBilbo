@@ -17,6 +17,8 @@ class GameViewController: UIViewController {
         if let view = self.view as! SKView? {
             let screenSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
             let scene = GameScene(size: screenSize)
+            // let scene = CatAnimation(size: view.bounds.size)
+            // scene.scaleMode = .resizeFill
 
             scene.scaleMode = .aspectFill
             
@@ -45,4 +47,9 @@ class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+  }
+  
+  override var prefersStatusBarHidden: Bool {
+    return true
+  }
 }

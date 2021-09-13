@@ -8,20 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		1BCCD12826EBE90A00ABB0E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCCD12726EBE90A00ABB0E0 /* AppDelegate.swift */; };
+		1BCCD12E26EBE90A00ABB0E0 /* CatAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCCD12D26EBE90A00ABB0E0 /* CatAnimation.swift */; };
 		1BCCD12E26EBE90A00ABB0E0 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCCD12D26EBE90A00ABB0E0 /* GameScene.swift */; };
 		1BCCD13026EBE90A00ABB0E0 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCCD12F26EBE90A00ABB0E0 /* GameViewController.swift */; };
 		1BCCD13326EBE90A00ABB0E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BCCD13126EBE90A00ABB0E0 /* Main.storyboard */; };
 		1BCCD13526EBE90C00ABB0E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BCCD13426EBE90C00ABB0E0 /* Assets.xcassets */; };
+		F82100E426EFC2D50022293D /* CatMovement.atlas in Resources */ = {isa = PBXBuildFile; fileRef = F82100E326EFC2D50022293D /* CatMovement.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1BCCD12426EBE90A00ABB0E0 /* AdventuresOfBilbo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdventuresOfBilbo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BCCD12726EBE90A00ABB0E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1BCCD12D26EBE90A00ABB0E0 /* CatAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatAnimation.swift; sourceTree = "<group>"; };
 		1BCCD12D26EBE90A00ABB0E0 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		1BCCD12F26EBE90A00ABB0E0 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		1BCCD13226EBE90A00ABB0E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1BCCD13426EBE90C00ABB0E0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1BCCD13626EBE90C00ABB0E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F82100E326EFC2D50022293D /* CatMovement.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = CatMovement.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,7 +58,9 @@
 		1BCCD12626EBE90A00ABB0E0 /* AdventuresOfBilbo */ = {
 			isa = PBXGroup;
 			children = (
+				F82100E326EFC2D50022293D /* CatMovement.atlas */,
 				1BCCD12726EBE90A00ABB0E0 /* AppDelegate.swift */,
+				1BCCD12D26EBE90A00ABB0E0 /* CatAnimation.swift */,
 				1BCCD12D26EBE90A00ABB0E0 /* GameScene.swift */,
 				1BCCD12F26EBE90A00ABB0E0 /* GameViewController.swift */,
 				1BCCD13126EBE90A00ABB0E0 /* Main.storyboard */,
@@ -123,6 +129,7 @@
 			files = (
 				1BCCD13326EBE90A00ABB0E0 /* Main.storyboard in Resources */,
 				1BCCD13526EBE90C00ABB0E0 /* Assets.xcassets in Resources */,
+				F82100E426EFC2D50022293D /* CatMovement.atlas in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,7 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1BCCD12E26EBE90A00ABB0E0 /* GameScene.swift in Sources */,
+				1BCCD12E26EBE90A00ABB0E0 /* CatAnimation.swift in Sources */,
 				1BCCD13026EBE90A00ABB0E0 /* GameViewController.swift in Sources */,
 				1BCCD12826EBE90A00ABB0E0 /* AppDelegate.swift in Sources */,
 			);
@@ -275,7 +282,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GYMDP69744;
+				DEVELOPMENT_TEAM = KY3S643HND;
 				INFOPLIST_FILE = AdventuresOfBilbo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -284,7 +291,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pazzi.marina.AdventuresOfBilbo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -294,7 +301,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GYMDP69744;
+				DEVELOPMENT_TEAM = KY3S643HND;
 				INFOPLIST_FILE = AdventuresOfBilbo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -303,7 +310,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pazzi.marina.AdventuresOfBilbo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
