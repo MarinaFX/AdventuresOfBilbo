@@ -8,79 +8,108 @@
 import SpriteKit
 import GameplayKit
 
+//MARK: - GameScene Class
+
 class GameScene: SKScene {
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    //MARK: GameScene Nodes
+    private var bilbo = SKSpriteNode()
+    
+    private var floor = SKShapeNode()
+    private var wall = SKShapeNode()
+    private var midFloor = SKShapeNode()
+    private var ceiling = SKShapeNode()
+    
+    //MARK: GameScene Variables
+    private var floorSize = CGSize(width: 0, height: 0)
+    
+    //MARK: GameScene Init
     
     override func didMove(to view: SKView) {
+        self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
+        floorSize = CGSize(width: (scene?.size.width)!, height: 20)
         
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+        createScenery()
+        setSceneryPhysics()
+    }
+    
+    //MARK: GameScene Functions
+    
+    func setSceneryPhysics() {
+        //setting floor physics body
+        let floorPhysicsBody = SKPhysicsBody(rectangleOf: self.floor.frame.size)
+        floorPhysicsBody.isDynamic = false
+        self.floor.physicsBody = floorPhysicsBody
         
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
-        }
-    }
-    
-    
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
+        let wallPhysicsBody = SKPhysicsBody(rectangleOf: self.wall.frame.size)
+        wallPhysicsBody.isDynamic = false
+        self.wall.physicsBody = wallPhysicsBody
         
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+        let midFloorPhysicsBody = SKPhysicsBody(rectangleOf: self.midFloor.frame.size)
+        midFloorPhysicsBody.isDynamic = false
+        self.midFloor.physicsBody = midFloorPhysicsBody
+        
+        let ceilingPhysicsBody = SKPhysicsBody(rectangleOf: self.ceiling.frame.size)
+        ceilingPhysicsBody.isDynamic = false
+        self.ceiling.physicsBody = ceilingPhysicsBody
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
+    func createScenery(){
+        //creating floor
+        let floor = SKShapeNode(rectOf: floorSize)
+        floor.name = "floor"
+        floor.fillColor = .blue
+        floor.strokeColor = .blue
+
+        let floorPos = CGPoint(x: 0, y: -((scene?.size.height)! * 0.35))
+        floor.position = floorPos
+        floor.zPosition = 3
+
+        self.floor = floor
+        
+        //create left starting wall
+        let wall = SKShapeNode(rectOf: CGSize(width: 20, height: -((scene?.size.height)! * 0.7)))
+        wall.name = "wall"
+        wall.fillColor = .orange
+        wall.strokeColor = .orange
+        
+        let wallPos = CGPoint(x: -((scene?.size.width)! * 0.4), y: 0)
+        wall.position = wallPos
+        wall.zPosition = 2
+        
+        self.wall = wall
+        
+        //creating mid floor
+        let midFloor = SKShapeNode(rectOf: floorSize)
+        midFloor.name = "midFloor"
+        midFloor.fillColor = .blue
+        midFloor.strokeColor = .blue
+                
+        let midFloorPos = CGPoint(x: ((scene?.size.width)! * 0.9), y: 0)
+        midFloor.position = midFloorPos
+        midFloor.zPosition = 3
+        
+        self.midFloor = midFloor
+        
+        //creating ceiling
+        let ceiling = SKShapeNode(rectOf: floorSize)
+        ceiling.name = "ceiling"
+        ceiling.fillColor = .blue
+        ceiling.strokeColor = .blue
+
+        let ceilingPos = CGPoint(x: 0, y: ((scene?.size.height)! * 0.35))
+        ceiling.position = ceilingPos
+        ceiling.zPosition = 3
+        
+        self.ceiling = ceiling
+        
+        addChild(self.floor)
+        addChild(self.wall)
+        addChild(self.midFloor)
+        addChild(self.ceiling)
+
     }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
