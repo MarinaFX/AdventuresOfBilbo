@@ -58,8 +58,8 @@
 		1BCCD12626EBE90A00ABB0E0 /* AdventuresOfBilbo */ = {
 			isa = PBXGroup;
 			children = (
-				F82100E726EFD3C80022293D /* CatAnimation.swift */,
 				F82100E326EFC2D50022293D /* CatMovement.atlas */,
+				F82100E726EFD3C80022293D /* CatAnimation.swift */,
 				1BCCD12726EBE90A00ABB0E0 /* AppDelegate.swift */,
 				1BCCD12D26EBE90A00ABB0E0 /* GameScene.swift */,
 				1BCCD12F26EBE90A00ABB0E0 /* GameViewController.swift */,

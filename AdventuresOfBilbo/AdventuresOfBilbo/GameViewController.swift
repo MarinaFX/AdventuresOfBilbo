@@ -19,8 +19,8 @@ class GameViewController: UIViewController {
             let scene = GameScene(size: screenSize)
             // let scene = CatAnimation(size: view.bounds.size)
             // scene.scaleMode = .resizeFill
-
-            scene.scaleMode = .aspectFill
+            
+            scene.scaleMode = .resizeFill
             
             // Present the scene
             view.presentScene(scene)
@@ -47,9 +47,4 @@ class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
-  }
-  
-  override var prefersStatusBarHidden: Bool {
-    return true
-  }
 }

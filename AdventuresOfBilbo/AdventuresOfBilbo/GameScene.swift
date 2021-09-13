@@ -14,6 +14,7 @@ class GameScene: SKScene {
     
     //MARK: GameScene Nodes
     private var bilbo = SKSpriteNode()
+    private var bilboWalkingFrames: [SKTexture] = []
     
     private var floor = SKShapeNode()
     private var wall = SKShapeNode()
@@ -30,9 +31,13 @@ class GameScene: SKScene {
         
         floorSize = CGSize(width: (scene?.size.width)!, height: 20)
         
+        buildBilbo()
+        animateBilbo()
         createScenery()
         setSceneryPhysics()
     }
+    
+    //MARK: GameScene Functions
     
     //MARK: GameScene Functions
     
@@ -55,17 +60,46 @@ class GameScene: SKScene {
         self.ceiling.physicsBody = ceilingPhysicsBody
     }
     
+    func buildBilbo() {
+        let catAnimatedAtlas = SKTextureAtlas(named: "CatMovement")
+        var walkFrames: [SKTexture] = []
+        
+        let numImages = catAnimatedAtlas.textureNames.count
+        for i in 1...numImages {
+            let catTextureName = "gato_\(i)"
+            walkFrames.append(catAnimatedAtlas.textureNamed(catTextureName))
+        }
+        bilboWalkingFrames = walkFrames
+        
+        let firstFrameTexture = bilboWalkingFrames[0]
+        bilbo = SKSpriteNode(texture: firstFrameTexture)
+        bilbo.position = CGPoint(x: 0, y: 0)
+        bilbo.zPosition = 3
+        bilbo.size = CGSize(width: ((scene?.size.width)! * 0.6), height: ((scene?.size.height)! * 0.6))
+        
+        addChild(bilbo)
+    }
+    
+    func animateBilbo() {
+        bilbo.run(SKAction.repeatForever(
+                    SKAction.animate(with: bilboWalkingFrames,
+                                     timePerFrame: 0.1,
+                                     resize: false,
+                                     restore: true)),
+                  withKey:"walkingInPlaceCat")
+    }
+    
     func createScenery(){
         //creating floor
         let floor = SKShapeNode(rectOf: floorSize)
         floor.name = "floor"
         floor.fillColor = .blue
         floor.strokeColor = .blue
-
+        
         let floorPos = CGPoint(x: 0, y: -((scene?.size.height)! * 0.35))
         floor.position = floorPos
         floor.zPosition = 3
-
+        
         self.floor = floor
         
         //create left starting wall
@@ -85,7 +119,7 @@ class GameScene: SKScene {
         midFloor.name = "midFloor"
         midFloor.fillColor = .blue
         midFloor.strokeColor = .blue
-                
+        
         let midFloorPos = CGPoint(x: ((scene?.size.width)! * 0.9), y: 0)
         midFloor.position = midFloorPos
         midFloor.zPosition = 3
@@ -97,7 +131,7 @@ class GameScene: SKScene {
         ceiling.name = "ceiling"
         ceiling.fillColor = .blue
         ceiling.strokeColor = .blue
-
+        
         let ceilingPos = CGPoint(x: 0, y: ((scene?.size.height)! * 0.35))
         ceiling.position = ceilingPos
         ceiling.zPosition = 3
@@ -108,7 +142,7 @@ class GameScene: SKScene {
         addChild(self.wall)
         addChild(self.midFloor)
         addChild(self.ceiling)
-
+        
     }
     
     override func update(_ currentTime: TimeInterval) {
