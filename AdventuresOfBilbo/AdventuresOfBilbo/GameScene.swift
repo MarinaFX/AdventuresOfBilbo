@@ -69,44 +69,18 @@ class GameScene: SKScene {
             let location = touch.location(in: self)
             
             if upMove.contains(location){
-                let moveUp = SKAction.move(by: CGVector(dx: 0.0, dy: 40.0), duration: 0.6)
-                let moveDown = SKAction.move(by: CGVector(dx: 0.0, dy: -40.0), duration: 0.6)
-                let sequence = SKAction.sequence([moveUp,moveDown])
-                
-                bilbo.run(sequence)
+                bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 180.0))
             } else if rightMove.contains(location){
-                let moveUp = SKAction.move(by: CGVector(dx: 10, dy: 0), duration: 0.6)
+                let moveUp = SKAction.move(by: CGVector(dx: 60, dy: 0), duration: 0.6)
                 let sequence = SKAction.sequence([moveUp])
-                
                 bilbo.run(sequence)
             } else if leftMove.contains(location){
-                let moveUp = SKAction.move(by: CGVector(dx: -10, dy: 0), duration: 0.6)
+                let moveUp = SKAction.move(by: CGVector(dx: -60, dy: 0), duration: 0.6)
                 let sequence = SKAction.sequence([moveUp])
-                
                 bilbo.run(sequence)
             }
         }
     }
-    //MARK:- GameScene Buttons Actions
-    
-    @objc func yMove(){
-        let moveUp = SKAction.move(by: CGVector(dx: 0.0, dy: 40.0), duration: 0.6)
-        let moveDown = SKAction.move(by: CGVector(dx: 0.0, dy: -40.0), duration: 0.6)
-        let sequence = SKAction.sequence([moveUp,moveDown])
-        
-        bilbo.run(sequence)
-    }
-    func xMove (moveBy: CGFloat, forTheKey: String) {
-        let rightAction = SKAction.moveBy(x: moveBy, y: 0, duration: 1)
-        let repeatForEver = SKAction.repeatForever(rightAction)
-        let seq = SKAction.sequence([rightAction, repeatForEver])
-        
-        //run the action on your ship
-        bilbo.run(seq, withKey: forTheKey)
-    }
-
-    
-    
     //MARK: GameScene Functions
     
     func setSceneryPhysics() {
@@ -157,12 +131,7 @@ class GameScene: SKScene {
     }
     
     func animateBilbo() {
-        bilbo.run(SKAction.repeatForever(
-                    SKAction.animate(with: bilboWalkingFrames,
-                                     timePerFrame: 0.1,
-                                     resize: false,
-                                     restore: true)),
-                  withKey:"walkingInPlaceCat")
+        bilbo.run(SKAction.repeatForever(SKAction.animate(with: bilboWalkingFrames, timePerFrame: 0.1, resize: false, restore: true)), withKey:"walkingInPlaceCat")
     }
     
     func createScenery(){
