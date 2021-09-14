@@ -33,16 +33,15 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
-        floorSize = CGSize(width: (scene?.size.width)!, height: 20)
+        floorSize = CGSize(width: ((scene?.size.width)! * 2), height: 20)
         
         buildBilbo()
         animateBilbo()
         createScenery()
         setSceneryPhysics()
         createControls()
-
-        
     }
+    
     func createControls(){
         upMove.name = "upButton"
         upMove.position = CGPoint(x: 330, y: -130)
@@ -62,7 +61,6 @@ class GameScene: SKScene {
         rightMove.zPosition = 5
         addChild(rightMove)
     }
-    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in (touches ){
@@ -105,8 +103,6 @@ class GameScene: SKScene {
         bilbo.run(seq, withKey: forTheKey)
     }
 
-    
-    
     //MARK: GameScene Functions
     
     func setSceneryPhysics() {
