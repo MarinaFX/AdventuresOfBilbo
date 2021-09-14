@@ -24,8 +24,12 @@ class GameScene: SKScene {
     //MARK: GameScene Variables
     private var floorSize = CGSize(width: 0, height: 0)
     
-    //MARK: GameScene Init
+    let upMove = SKSpriteNode(imageNamed: "upMove")
+    let leftMove = SKSpriteNode (imageNamed: "leftMove")
+    let rightMove = SKSpriteNode (imageNamed: "rightMove")
+
     
+    //MARK: GameScene Init
     override func didMove(to view: SKView) {
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
@@ -35,9 +39,73 @@ class GameScene: SKScene {
         animateBilbo()
         createScenery()
         setSceneryPhysics()
+        createControls()
+
+        
+    }
+    func createControls(){
+        upMove.name = "upButton"
+        upMove.position = CGPoint(x: 330, y: -130)
+        upMove.size = CGSize (width: 70, height: 70)
+        upMove.zPosition = 5
+        addChild(upMove)
+        
+        leftMove.name = "leftMove"
+        leftMove.position = CGPoint(x: -330, y: -130)
+        leftMove.size = CGSize (width: 70, height: 70)
+        leftMove.zPosition = 5
+        addChild(leftMove)
+        
+        rightMove.name = "rightMove"
+        rightMove.position = CGPoint(x: -220, y: -130)
+        rightMove.size = CGSize (width: 70, height: 70)
+        rightMove.zPosition = 5
+        addChild(rightMove)
     }
     
-    //MARK: GameScene Functions
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in (touches ){
+            let location = touch.location(in: self)
+            
+            if upMove.contains(location){
+                let moveUp = SKAction.move(by: CGVector(dx: 0.0, dy: 40.0), duration: 0.6)
+                let moveDown = SKAction.move(by: CGVector(dx: 0.0, dy: -40.0), duration: 0.6)
+                let sequence = SKAction.sequence([moveUp,moveDown])
+                
+                bilbo.run(sequence)
+            } else if rightMove.contains(location){
+                let moveUp = SKAction.move(by: CGVector(dx: 10, dy: 0), duration: 0.6)
+                let sequence = SKAction.sequence([moveUp])
+                
+                bilbo.run(sequence)
+            } else if leftMove.contains(location){
+                let moveUp = SKAction.move(by: CGVector(dx: -10, dy: 0), duration: 0.6)
+                let sequence = SKAction.sequence([moveUp])
+                
+                bilbo.run(sequence)
+            }
+        }
+    }
+    //MARK:- GameScene Buttons Actions
+    
+    @objc func yMove(){
+        let moveUp = SKAction.move(by: CGVector(dx: 0.0, dy: 40.0), duration: 0.6)
+        let moveDown = SKAction.move(by: CGVector(dx: 0.0, dy: -40.0), duration: 0.6)
+        let sequence = SKAction.sequence([moveUp,moveDown])
+        
+        bilbo.run(sequence)
+    }
+    func xMove (moveBy: CGFloat, forTheKey: String) {
+        let rightAction = SKAction.moveBy(x: moveBy, y: 0, duration: 1)
+        let repeatForEver = SKAction.repeatForever(rightAction)
+        let seq = SKAction.sequence([rightAction, repeatForEver])
+        
+        //run the action on your ship
+        bilbo.run(seq, withKey: forTheKey)
+    }
+
+    
     
     //MARK: GameScene Functions
     
