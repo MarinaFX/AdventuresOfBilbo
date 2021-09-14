@@ -147,6 +147,14 @@ class GameScene: SKScene {
         bilbo.zPosition = 3
         bilbo.size = CGSize(width: ((scene?.size.width)! * 0.6), height: ((scene?.size.height)! * 0.6))
         
+        //settings cat physics body
+        for i in 1...numImages {
+            let bilboPhysicsBody = SKPhysicsBody(texture: bilboWalkingFrames[i - 1], size: bilbo.size)
+            bilboPhysicsBody.isDynamic = true
+            bilboPhysicsBody.affectedByGravity = true
+            self.bilbo.physicsBody = bilboPhysicsBody
+        }
+        
         addChild(bilbo)
     }
     
