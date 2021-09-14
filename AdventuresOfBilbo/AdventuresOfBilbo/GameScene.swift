@@ -13,26 +13,28 @@ import GameplayKit
 class GameScene: SKScene {
     
     //MARK: GameScene Nodes
-    private var bilbo = SKSpriteNode()
+    private var bilbo: SKSpriteNode = SKSpriteNode()
     private var bilboWalkingFrames: [SKTexture] = []
     
-    private var floor = SKShapeNode()
-    private var wall = SKShapeNode()
-    private var midFloor = SKShapeNode()
-    private var ceiling = SKShapeNode()
+    private var floor: SKShapeNode = SKShapeNode()
+    private var wall: SKShapeNode = SKShapeNode()
+    private var midFloor: SKShapeNode = SKShapeNode()
+    private var ceiling: SKShapeNode = SKShapeNode()
+    
+    let upMove: SKSpriteNode = SKSpriteNode(imageNamed: "upMove")
+    let leftMove: SKSpriteNode = SKSpriteNode(imageNamed: "leftMove")
+    let rightMove: SKSpriteNode = SKSpriteNode(imageNamed: "rightMove")
     
     //MARK: GameScene Variables
-    private var floorSize = CGSize(width: 0, height: 0)
-    
-    let upMove = SKSpriteNode(imageNamed: "upMove")
-    let leftMove = SKSpriteNode (imageNamed: "leftMove")
-    let rightMove = SKSpriteNode (imageNamed: "rightMove")
-
+    private var floorSize: CGSize = CGSize(width: 0, height: 0)
+    private var cam: SKCameraNode = SKCameraNode()
     
     //MARK: GameScene Init
     override func didMove(to view: SKView) {
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
+        self.camera = cam
+        self.backgroundColor = .brown
         floorSize = CGSize(width: (scene?.size.width)!, height: 20)
         
         buildBilbo()
@@ -40,33 +42,34 @@ class GameScene: SKScene {
         createScenery()
         setSceneryPhysics()
         createControls()
-
         
-    }
-    func createControls(){
-        upMove.name = "upButton"
-        upMove.position = CGPoint(x: 330, y: -130)
-        upMove.size = CGSize (width: 70, height: 70)
-        upMove.zPosition = 5
-        addChild(upMove)
-        
-        leftMove.name = "leftMove"
-        leftMove.position = CGPoint(x: -330, y: -130)
-        leftMove.size = CGSize (width: 70, height: 70)
-        leftMove.zPosition = 5
-        addChild(leftMove)
-        
-        rightMove.name = "rightMove"
-        rightMove.position = CGPoint(x: -220, y: -130)
-        rightMove.size = CGSize (width: 70, height: 70)
-        rightMove.zPosition = 5
-        addChild(rightMove)
+        self.addChild(cam)
     }
     
+    func createControls(){
+        upMove.name = "upButton"
+        upMove.position = CGPoint(x: ((scene?.size.width)! * 0.40), y: -((scene?.size.height)! * 0.3))
+        upMove.size = CGSize (width: 70, height: 70)
+        upMove.zPosition = 3
+        
+        leftMove.name = "leftMove"
+        leftMove.position = CGPoint(x: -((scene?.size.width)! * 0.39), y: -((scene?.size.height)! * 0.3))
+        leftMove.size = CGSize (width: 70, height: 70)
+        leftMove.zPosition = 3
+        
+        rightMove.name = "rightMove"
+        rightMove.position = CGPoint(x: -((scene?.size.width)! * 0.29), y: -((scene?.size.height)! * 0.3))
+        rightMove.size = CGSize (width: 70, height: 70)
+        rightMove.zPosition = 3
+        
+        cam.addChild(upMove)
+        cam.addChild(leftMove)
+        cam.addChild(rightMove)
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in (touches ){
-            let location = touch.location(in: self)
+            let location = touch.location(in: cam)
             
             if upMove.contains(location){
                 let moveUp = SKAction.move(by: CGVector(dx: 0.0, dy: 40.0), duration: 0.6)
@@ -104,7 +107,6 @@ class GameScene: SKScene {
         //run the action on your ship
         bilbo.run(seq, withKey: forTheKey)
     }
-
     
     
     //MARK: GameScene Functions
@@ -214,6 +216,6 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+        self.camera?.position = bilbo.position
     }
 }
