@@ -40,7 +40,6 @@ class GameScene: SKScene {
         createScenery()
         setSceneryPhysics()
         createControls()
-
         
     }
     func createControls(){
@@ -69,13 +68,13 @@ class GameScene: SKScene {
             let location = touch.location(in: self)
             
             if upMove.contains(location){
-                bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 180.0))
+                bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 150.0))
             } else if rightMove.contains(location){
-                let moveUp = SKAction.move(by: CGVector(dx: 60, dy: 0), duration: 0.6)
+                let moveUp = SKAction.move(by: CGVector(dx: 30, dy: 0), duration: 0.6)
                 let sequence = SKAction.sequence([moveUp])
                 bilbo.run(sequence)
             } else if leftMove.contains(location){
-                let moveUp = SKAction.move(by: CGVector(dx: -60, dy: 0), duration: 0.6)
+                let moveUp = SKAction.move(by: CGVector(dx: -30, dy: 0), duration: 0.6)
                 let sequence = SKAction.sequence([moveUp])
                 bilbo.run(sequence)
             }
@@ -124,6 +123,7 @@ class GameScene: SKScene {
             let bilboPhysicsBody = SKPhysicsBody(texture: bilboWalkingFrames[i - 1], size: bilbo.size)
             bilboPhysicsBody.isDynamic = true
             bilboPhysicsBody.affectedByGravity = true
+            bilboPhysicsBody.allowsRotation = false
             self.bilbo.physicsBody = bilboPhysicsBody
         }
         
