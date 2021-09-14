@@ -24,6 +24,8 @@ class GameScene: SKScene {
     let upMove: SKSpriteNode = SKSpriteNode(imageNamed: "upMove")
     let leftMove: SKSpriteNode = SKSpriteNode(imageNamed: "leftMove")
     let rightMove: SKSpriteNode = SKSpriteNode(imageNamed: "rightMove")
+    var rightMoveIsPressed = false
+    var leftMoveIsPressed = false
     
     //MARK: GameScene Variables
     private var floorSize: CGSize = CGSize(width: 0, height: 0)
@@ -66,46 +68,32 @@ class GameScene: SKScene {
         cam.addChild(leftMove)
         cam.addChild(rightMove)
     }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in (touches ){
             let location = touch.location(in: cam)
             
             if upMove.contains(location){
-                let moveUp = SKAction.move(by: CGVector(dx: 0.0, dy: 40.0), duration: 0.6)
-                let moveDown = SKAction.move(by: CGVector(dx: 0.0, dy: -40.0), duration: 0.6)
-                let sequence = SKAction.sequence([moveUp,moveDown])
-                
-                bilbo.run(sequence)
+                if touch.tapCount < 3{
+                    bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 130.0))
+                }
             } else if rightMove.contains(location){
-                let moveUp = SKAction.move(by: CGVector(dx: 10, dy: 0), duration: 0.6)
-                let sequence = SKAction.sequence([moveUp])
-                
-                bilbo.run(sequence)
+                rightMoveIsPressed = true
             } else if leftMove.contains(location){
-                let moveUp = SKAction.move(by: CGVector(dx: -10, dy: 0), duration: 0.6)
-                let sequence = SKAction.sequence([moveUp])
-                
-                bilbo.run(sequence)
+                leftMoveIsPressed = true
             }
         }
     }
-    //MARK:- GameScene Buttons Actions
-    
-    @objc func yMove(){
-        let moveUp = SKAction.move(by: CGVector(dx: 0.0, dy: 40.0), duration: 0.6)
-        let moveDown = SKAction.move(by: CGVector(dx: 0.0, dy: -40.0), duration: 0.6)
-        let sequence = SKAction.sequence([moveUp,moveDown])
-        
-        bilbo.run(sequence)
-    }
-    func xMove (moveBy: CGFloat, forTheKey: String) {
-        let rightAction = SKAction.moveBy(x: moveBy, y: 0, duration: 1)
-        let repeatForEver = SKAction.repeatForever(rightAction)
-        let seq = SKAction.sequence([rightAction, repeatForEver])
-        
-        //run the action on your ship
-        bilbo.run(seq, withKey: forTheKey)
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in (touches ){
+            let location = touch.location(in: cam)
+            
+            if rightMove.contains(location){
+                rightMoveIsPressed = false
+            } else if leftMove.contains(location){
+                leftMoveIsPressed = false
+
+            }
+        }
     }
     
     
@@ -152,6 +140,7 @@ class GameScene: SKScene {
             let bilboPhysicsBody = SKPhysicsBody(texture: bilboWalkingFrames[i - 1], size: bilbo.size)
             bilboPhysicsBody.isDynamic = true
             bilboPhysicsBody.affectedByGravity = true
+            bilboPhysicsBody.allowsRotation = false
             self.bilbo.physicsBody = bilboPhysicsBody
         }
         
@@ -159,12 +148,7 @@ class GameScene: SKScene {
     }
     
     func animateBilbo() {
-        bilbo.run(SKAction.repeatForever(
-                    SKAction.animate(with: bilboWalkingFrames,
-                                     timePerFrame: 0.1,
-                                     resize: false,
-                                     restore: true)),
-                  withKey:"walkingInPlaceCat")
+        bilbo.run(SKAction.repeatForever(SKAction.animate(with: bilboWalkingFrames, timePerFrame: 0.1, resize: false, restore: true)), withKey:"walkingInPlaceCat")
     }
     
     func createScenery(){
@@ -224,6 +208,17 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        if leftMoveIsPressed == true {
+            let moveUp = SKAction.move(by: CGVector(dx: -4, dy: 0), duration: 0.1)
+            let sequence = SKAction.sequence([moveUp])
+            bilbo.run(sequence)
+            }
+
+           if rightMoveIsPressed == true {
+            let moveUp = SKAction.move(by: CGVector(dx: 4, dy: 0), duration: 0.1)
+            let sequence = SKAction.sequence([moveUp])
+            bilbo.run(sequence)
+            }
         self.camera?.position = bilbo.position
     }
 }
