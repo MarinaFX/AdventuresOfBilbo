@@ -71,7 +71,7 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
                 if ((touch.tapCount) <= 2) {
-                    bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 130.0))
+                    bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 140.0))
                 }
             }
     }
@@ -110,9 +110,9 @@ class GameScene: SKScene {
         
         let firstFrameTexture = bilboWalkingFrames[0]
         bilbo = SKSpriteNode(texture: firstFrameTexture)
-        bilbo.position = CGPoint(x: 0, y: 0)
+        bilbo.position = CGPoint(x: -200, y: 0)
         bilbo.zPosition = 3
-        bilbo.size = CGSize(width: ((scene?.size.width)! * 0.6), height: ((scene?.size.height)! * 0.6))
+        bilbo.size = CGSize(width: ((scene?.size.width)! * 0.25), height: ((scene?.size.height)! * 0.25))
         
         //settings cat physics body
         for i in 1...numImages {
