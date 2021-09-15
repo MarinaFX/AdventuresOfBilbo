@@ -8,7 +8,7 @@
 import SpriteKit
 import GameplayKit
 
-//MARK: - GameScene Class
+    //MARK: - GameScene Class
 
 class GameScene: SKScene {
     
@@ -21,21 +21,17 @@ class GameScene: SKScene {
     private var midFloor: SKShapeNode = SKShapeNode()
     private var ceiling: SKShapeNode = SKShapeNode()
     
-    let upMove: SKSpriteNode = SKSpriteNode(imageNamed: "upMove")
-    let leftMove: SKSpriteNode = SKSpriteNode(imageNamed: "leftMove")
-    let rightMove: SKSpriteNode = SKSpriteNode(imageNamed: "rightMove")
-    var rightMoveIsPressed = false
-    var leftMoveIsPressed = false
+    var touchUP: Bool = false
     
     //MARK: GameScene Variables
     private var floorSize: CGSize = CGSize(width: 0, height: 0)
-    private var cam: SKCameraNode = SKCameraNode()
+//    private var cam: SKCameraNode = SKCameraNode()
     
     //MARK: GameScene Init
     override func didMove(to view: SKView) {
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
-        self.camera = cam
+//        self.camera = cam
         self.backgroundColor = .brown
         floorSize = CGSize(width: (scene?.size.width)!, height: 20)
         
@@ -43,58 +39,44 @@ class GameScene: SKScene {
         animateBilbo()
         createScenery()
         setSceneryPhysics()
-        createControls()
+//        createControls()
         
-        self.addChild(cam)
+//        self.addChild(cam)
     }
     
-    func createControls(){
-        upMove.name = "upButton"
-        upMove.position = CGPoint(x: ((scene?.size.width)! * 0.40), y: -((scene?.size.height)! * 0.3))
-        upMove.size = CGSize (width: 70, height: 70)
-        upMove.zPosition = 3
-        
-        leftMove.name = "leftMove"
-        leftMove.position = CGPoint(x: -((scene?.size.width)! * 0.39), y: -((scene?.size.height)! * 0.3))
-        leftMove.size = CGSize (width: 70, height: 70)
-        leftMove.zPosition = 3
-        
-        rightMove.name = "rightMove"
-        rightMove.position = CGPoint(x: -((scene?.size.width)! * 0.29), y: -((scene?.size.height)! * 0.3))
-        rightMove.size = CGSize (width: 70, height: 70)
-        rightMove.zPosition = 3
-        
-        cam.addChild(upMove)
-        cam.addChild(leftMove)
-        cam.addChild(rightMove)
+    @objc func handleTapGesture(gesture: UITapGestureRecognizer) -> Void {
+        bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 130.0))
     }
+    
+//    func createControls(){
+//        upMove.name = "upButton"
+//        upMove.position = CGPoint(x: ((scene?.size.width)! * 0.40), y: -((scene?.size.height)! * 0.3))
+//        upMove.size = CGSize (width: 70, height: 70)
+//        upMove.zPosition = 3
+//
+//        leftMove.name = "leftMove"
+//        leftMove.position = CGPoint(x: -((scene?.size.width)! * 0.39), y: -((scene?.size.height)! * 0.3))
+//        leftMove.size = CGSize (width: 70, height: 70)
+//        leftMove.zPosition = 3
+//
+//        rightMove.name = "rightMove"
+//        rightMove.position = CGPoint(x: -((scene?.size.width)! * 0.29), y: -((scene?.size.height)! * 0.3))
+//        rightMove.size = CGSize (width: 70, height: 70)
+//        rightMove.zPosition = 3
+//
+//        cam.addChild(upMove)
+//        cam.addChild(leftMove)
+//        cam.addChild(rightMove)
+//    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in (touches ){
-            let location = touch.location(in: cam)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTapGesture(gesture:)))
+        if tapGesture.numberOfTapsRequired < 2 {
             
-            if upMove.contains(location){
-                if touch.tapCount < 3{
-                    bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 130.0))
-                }
-            } else if rightMove.contains(location){
-                rightMoveIsPressed = true
-            } else if leftMove.contains(location){
-                leftMoveIsPressed = true
-            }
         }
+        self.view?.addGestureRecognizer(tapGesture)
     }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in (touches ){
-            let location = touch.location(in: cam)
-            
-            if rightMove.contains(location){
-                rightMoveIsPressed = false
-            } else if leftMove.contains(location){
-                leftMoveIsPressed = false
 
-            }
-        }
-    }
     
     
     //MARK: GameScene Functions
@@ -208,17 +190,17 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        if leftMoveIsPressed == true {
-            let moveUp = SKAction.move(by: CGVector(dx: -4, dy: 0), duration: 0.1)
-            let sequence = SKAction.sequence([moveUp])
-            bilbo.run(sequence)
-            }
-
-           if rightMoveIsPressed == true {
-            let moveUp = SKAction.move(by: CGVector(dx: 4, dy: 0), duration: 0.1)
-            let sequence = SKAction.sequence([moveUp])
-            bilbo.run(sequence)
-            }
-        self.camera?.position = bilbo.position
+//        if leftMoveIsPressed == true {
+//            let moveUp = SKAction.move(by: CGVector(dx: -4, dy: 0), duration: 0.1)
+//            let sequence = SKAction.sequence([moveUp])
+//            bilbo.run(sequence)
+//            }
+//
+//           if rightMoveIsPressed == true {
+//            let moveUp = SKAction.move(by: CGVector(dx: 4, dy: 0), duration: 0.1)
+//            let sequence = SKAction.sequence([moveUp])
+//            bilbo.run(sequence)
+//            }
+//        self.camera?.position = bilbo.position
     }
 }
