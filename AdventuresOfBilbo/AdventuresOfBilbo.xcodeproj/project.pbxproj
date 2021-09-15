@@ -12,7 +12,7 @@
 		1BCCD13026EBE90A00ABB0E0 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCCD12F26EBE90A00ABB0E0 /* GameViewController.swift */; };
 		1BCCD13326EBE90A00ABB0E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BCCD13126EBE90A00ABB0E0 /* Main.storyboard */; };
 		1BCCD13526EBE90C00ABB0E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BCCD13426EBE90C00ABB0E0 /* Assets.xcassets */; };
-		CC570B6526F13A7000AE3CFE /* ScenerySizesLevel1.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC570B6426F13A7000AE3CFE /* ScenerySizesLevel1.swift */; };
+		CC570B6526F13A7000AE3CFE /* SceneryObstacles.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC570B6426F13A7000AE3CFE /* SceneryObstacles.swift */; };
 		F82100E426EFC2D50022293D /* CatMovement.atlas in Resources */ = {isa = PBXBuildFile; fileRef = F82100E326EFC2D50022293D /* CatMovement.atlas */; };
 		F82100E826EFD3C80022293D /* CatAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82100E726EFD3C80022293D /* CatAnimation.swift */; };
 /* End PBXBuildFile section */
@@ -25,7 +25,7 @@
 		1BCCD13226EBE90A00ABB0E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1BCCD13426EBE90C00ABB0E0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1BCCD13626EBE90C00ABB0E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CC570B6426F13A7000AE3CFE /* ScenerySizesLevel1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenerySizesLevel1.swift; sourceTree = "<group>"; };
+		CC570B6426F13A7000AE3CFE /* SceneryObstacles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneryObstacles.swift; sourceTree = "<group>"; };
 		F82100E326EFC2D50022293D /* CatMovement.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = CatMovement.atlas; sourceTree = "<group>"; };
 		F82100E726EFD3C80022293D /* CatAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatAnimation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -68,7 +68,7 @@
 				1BCCD13126EBE90A00ABB0E0 /* Main.storyboard */,
 				1BCCD13426EBE90C00ABB0E0 /* Assets.xcassets */,
 				1BCCD13626EBE90C00ABB0E0 /* Info.plist */,
-				CC570B6426F13A7000AE3CFE /* ScenerySizesLevel1.swift */,
+				CC570B6426F13A7000AE3CFE /* SceneryObstacles.swift */,
 			);
 			path = AdventuresOfBilbo;
 			sourceTree = "<group>";
@@ -144,7 +144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BCCD12E26EBE90A00ABB0E0 /* GameScene.swift in Sources */,
-				CC570B6526F13A7000AE3CFE /* ScenerySizesLevel1.swift in Sources */,
+				CC570B6526F13A7000AE3CFE /* SceneryObstacles.swift in Sources */,
 				F82100E826EFD3C80022293D /* CatAnimation.swift in Sources */,
 				1BCCD13026EBE90A00ABB0E0 /* GameViewController.swift in Sources */,
 				1BCCD12826EBE90A00ABB0E0 /* AppDelegate.swift in Sources */,
