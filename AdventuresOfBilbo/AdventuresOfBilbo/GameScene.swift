@@ -7,30 +7,25 @@
 
 import SpriteKit
 import GameplayKit
+import UIKit
 
-//MARK: - GameScene Class
+    //MARK: - GameScene Class
 
 class GameScene: SKScene {
     
-    //MARK: GameScene Nodes
+    //MARK:- GameScene Nodes
     private var bilbo: SKSpriteNode = SKSpriteNode()
     private var bilboWalkingFrames: [SKTexture] = []
-    
     private var floor: SKShapeNode = SKShapeNode()
     private var background: SKSpriteNode = SKSpriteNode()
     
-    let upMove: SKSpriteNode = SKSpriteNode(imageNamed: "upMove")
-    let leftMove: SKSpriteNode = SKSpriteNode(imageNamed: "leftMove")
-    let rightMove: SKSpriteNode = SKSpriteNode(imageNamed: "rightMove")
-    var rightMoveIsPressed = false
-    var leftMoveIsPressed = false
+    var touchUP = SKSpriteNode()
     
     //MARK: GameScene Variables
     private var backgroundsCount = 0
     private var floorSize: CGSize = CGSize(width: 0, height: 0)
-    private var cam: SKCameraNode = SKCameraNode()
-    
-    //MARK: GameScene Init
+
+    //MARK:- GameScene Init
     override func didMove(to view: SKView) {
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
@@ -40,59 +35,31 @@ class GameScene: SKScene {
         animateBilbo()
         createScenery()
         setSceneryPhysics()
-        createControls()
+        score.setup(size: size)
+        addChild(score)
         createBackground(idealPosX: 0)
+        startCount()
     }
     
-    func createControls() {
-        upMove.name = "upButton"
-        upMove.position = CGPoint(x: ((scene?.size.width)! * 0.40), y: -((scene?.size.height)! * 0.3))
-        upMove.size = CGSize (width: 70, height: 70)
-        upMove.zPosition = 3
-        
-        leftMove.name = "leftMove"
-        leftMove.position = CGPoint(x: -((scene?.size.width)! * 0.39), y: -((scene?.size.height)! * 0.3))
-        leftMove.size = CGSize (width: 70, height: 70)
-        leftMove.zPosition = 3
-        
-        rightMove.name = "rightMove"
-        rightMove.position = CGPoint(x: -((scene?.size.width)! * 0.29), y: -((scene?.size.height)! * 0.3))
-        rightMove.size = CGSize (width: 70, height: 70)
-        rightMove.zPosition = 3
-        
-        cam.addChild(upMove)
-        cam.addChild(leftMove)
-        cam.addChild(rightMove)
+    //MARK:- HUD Score
+    private var score = HudNode()
+    var totalTime = Timer()
+    var timeInicial = 0
+    
+    func startCount(){
+        totalTime = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(addCounter), userInfo: nil, repeats: true)
+    }
+    @objc func addCounter(){
+        score.addPoint()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in (touches) {
-            let location = touch.location(in: self)
-            
-            if upMove.contains(location){
-                if touch.tapCount < 3{
-                    bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 130.0))
+        if let touch = touches.first {
+                if ((touch.tapCount) <= 2) {
+                    bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 120.0))
                 }
-            } else if rightMove.contains(location){
-                rightMoveIsPressed = true
-            } else if leftMove.contains(location){
-                leftMoveIsPressed = true
             }
-        }
     }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in (touches ){
-            let location = touch.location(in: cam)
-            
-            if rightMove.contains(location){
-                rightMoveIsPressed = false
-            } else if leftMove.contains(location){
-                leftMoveIsPressed = false
-
-            }
-        }
-    }
-    
     
     //MARK: GameScene Functions
     
@@ -116,9 +83,9 @@ class GameScene: SKScene {
         
         let firstFrameTexture = bilboWalkingFrames[0]
         bilbo = SKSpriteNode(texture: firstFrameTexture)
-        bilbo.position = CGPoint(x: 0, y: 0)
+        bilbo.position = CGPoint(x: -200, y: 0)
         bilbo.zPosition = 3
-        bilbo.size = CGSize(width: ((scene?.size.width)! * 0.6), height: ((scene?.size.height)! * 0.6))
+        bilbo.size = CGSize(width: ((scene?.size.width)! * 0.20), height: ((scene?.size.height)! * 0.25))
         
         //settings cat physics body
         for i in 1...numImages {
@@ -126,14 +93,11 @@ class GameScene: SKScene {
             bilboPhysicsBody.isDynamic = true
             bilboPhysicsBody.affectedByGravity = true
             bilboPhysicsBody.allowsRotation = false
+            bilboPhysicsBody.restitution = -30
             self.bilbo.physicsBody = bilboPhysicsBody
         }
         
         addChild(bilbo)
-    }
-    
-    func animateBilbo() {
-        bilbo.run(SKAction.repeatForever(SKAction.animate(with: bilboWalkingFrames, timePerFrame: 0.1, resize: false, restore: true)), withKey:"walkingInPlaceCat")
     }
     
     func createScenery() {
@@ -171,10 +135,14 @@ class GameScene: SKScene {
         addChild(background)
         backgroundsCount += 1
     }
+    //MARK:- Animation Functions
+    func animateBilbo() {
+        bilbo.run(SKAction.repeatForever(SKAction.animate(with: bilboWalkingFrames, timePerFrame: 0.1, resize: false, restore: true)), withKey:"walkingInPlaceCat")
+    }
     
     func animateBackground() {
         self.enumerateChildNodes(withName: "Background") { node, error in
-            node.position.x -= 2
+            node.position.x -= 5
             if node.position.x + node.frame.width/2 < ((self.scene?.frame.width ?? 0)/2) + 2 && self.backgroundsCount < 2 {
                 if let sceneSize = self.scene?.frame.size {
                     self.createBackground(idealPosX: sceneSize.width)
