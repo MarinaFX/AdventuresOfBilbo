@@ -8,7 +8,7 @@
 import SpriteKit
 import GameplayKit
 
-    //MARK: - GameScene Class
+//MARK: - GameScene Class
 
 class GameScene: SKScene {
     
@@ -21,7 +21,8 @@ class GameScene: SKScene {
     private var midFloor: SKShapeNode = SKShapeNode()
     private var ceiling: SKShapeNode = SKShapeNode()
     
-    var touchUP: Bool = false
+    var touchUP = SKSpriteNode()
+    private var score = HudNode()
     
     //MARK: GameScene Variables
     private var floorSize: CGSize = CGSize(width: 0, height: 0)
@@ -39,13 +40,11 @@ class GameScene: SKScene {
         animateBilbo()
         createScenery()
         setSceneryPhysics()
+        score.setup(size: size)
+        addChild(score)
 //        createControls()
         
 //        self.addChild(cam)
-    }
-    
-    @objc func handleTapGesture(gesture: UITapGestureRecognizer) -> Void {
-        bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 130.0))
     }
     
 //    func createControls(){
@@ -70,14 +69,12 @@ class GameScene: SKScene {
 //    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTapGesture(gesture:)))
-        if tapGesture.numberOfTapsRequired < 2 {
-            
-        }
-        self.view?.addGestureRecognizer(tapGesture)
+        if let touch = touches.first {
+                if ((touch.tapCount) <= 2) {
+                    bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 130.0))
+                }
+            }
     }
-
-    
     
     //MARK: GameScene Functions
     
