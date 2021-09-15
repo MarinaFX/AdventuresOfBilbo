@@ -112,7 +112,7 @@ class GameScene: SKScene {
         bilbo = SKSpriteNode(texture: firstFrameTexture)
         bilbo.position = CGPoint(x: -200, y: 0)
         bilbo.zPosition = 3
-        bilbo.size = CGSize(width: ((scene?.size.width)! * 0.25), height: ((scene?.size.height)! * 0.25))
+        bilbo.size = CGSize(width: ((scene?.size.width)! * 0.20), height: ((scene?.size.height)! * 0.25))
         
         //settings cat physics body
         for i in 1...numImages {
