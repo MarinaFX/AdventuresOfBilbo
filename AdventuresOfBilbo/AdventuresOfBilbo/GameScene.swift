@@ -17,14 +17,13 @@ class GameScene: SKScene {
     private var bilboWalkingFrames: [SKTexture] = []
     
     private var floor: SKShapeNode = SKShapeNode()
-    private var wall: SKShapeNode = SKShapeNode()
-    private var midFloor: SKShapeNode = SKShapeNode()
-    private var ceiling: SKShapeNode = SKShapeNode()
+    private var background: SKSpriteNode = SKSpriteNode()
     
     var touchUP = SKSpriteNode()
     private var score = HudNode()
     
     //MARK: GameScene Variables
+    private var backgroundsCount = 0
     private var floorSize: CGSize = CGSize(width: 0, height: 0)
 //    private var cam: SKCameraNode = SKCameraNode()
     
@@ -83,18 +82,6 @@ class GameScene: SKScene {
         let floorPhysicsBody = SKPhysicsBody(rectangleOf: self.floor.frame.size)
         floorPhysicsBody.isDynamic = false
         self.floor.physicsBody = floorPhysicsBody
-        
-        let wallPhysicsBody = SKPhysicsBody(rectangleOf: self.wall.frame.size)
-        wallPhysicsBody.isDynamic = false
-        self.wall.physicsBody = wallPhysicsBody
-        
-        let midFloorPhysicsBody = SKPhysicsBody(rectangleOf: self.midFloor.frame.size)
-        midFloorPhysicsBody.isDynamic = false
-        self.midFloor.physicsBody = midFloorPhysicsBody
-        
-        let ceilingPhysicsBody = SKPhysicsBody(rectangleOf: self.ceiling.frame.size)
-        ceilingPhysicsBody.isDynamic = false
-        self.ceiling.physicsBody = ceilingPhysicsBody
     }
     
     func buildBilbo() {
@@ -130,74 +117,59 @@ class GameScene: SKScene {
         bilbo.run(SKAction.repeatForever(SKAction.animate(with: bilboWalkingFrames, timePerFrame: 0.1, resize: false, restore: true)), withKey:"walkingInPlaceCat")
     }
     
-    func createScenery(){
+    func createScenery() {
         //creating floor
-        let floor = SKShapeNode(rectOf: floorSize)
+        let floor = SKShapeNode(rectOf: CGSize(width: (scene?.size.width)!, height: 20))
         floor.name = "floor"
-        floor.fillColor = .blue
-        floor.strokeColor = .blue
+        floor.fillColor = #colorLiteral(red: 0.2631310523, green: 0.1023383066, blue: 0.2378421128, alpha: 1)
+        floor.strokeColor = #colorLiteral(red: 0.2631310523, green: 0.1023383066, blue: 0.2378421128, alpha: 1)
         
-        let floorPos = CGPoint(x: 0, y: -((scene?.size.height)! * 0.35))
+        let floorPos = CGPoint(x: 0, y: -((scene?.size.height)! * 0.47))
         floor.position = floorPos
         floor.zPosition = 3
         
         self.floor = floor
         
-        //create left starting wall
-        let wall = SKShapeNode(rectOf: CGSize(width: 20, height: -((scene?.size.height)! * 0.7)))
-        wall.name = "wall"
-        wall.fillColor = .orange
-        wall.strokeColor = .orange
-        
-        let wallPos = CGPoint(x: -((scene?.size.width)! * 0.4), y: 0)
-        wall.position = wallPos
-        wall.zPosition = 2
-        
-        self.wall = wall
-        
-        //creating mid floor
-        let midFloor = SKShapeNode(rectOf: floorSize)
-        midFloor.name = "midFloor"
-        midFloor.fillColor = .blue
-        midFloor.strokeColor = .blue
-        
-        let midFloorPos = CGPoint(x: ((scene?.size.width)! * 0.9), y: 0)
-        midFloor.position = midFloorPos
-        midFloor.zPosition = 3
-        
-        self.midFloor = midFloor
-        
-        //creating ceiling
-        let ceiling = SKShapeNode(rectOf: floorSize)
-        ceiling.name = "ceiling"
-        ceiling.fillColor = .blue
-        ceiling.strokeColor = .blue
-        
-        let ceilingPos = CGPoint(x: 0, y: ((scene?.size.height)! * 0.35))
-        ceiling.position = ceilingPos
-        ceiling.zPosition = 3
-        
-        self.ceiling = ceiling
-        
         addChild(self.floor)
-        addChild(self.wall)
-        addChild(self.midFloor)
-        addChild(self.ceiling)
+    }
+    
+    func createBackground(idealPosX: CGFloat) {
+        //creating infinite background
+        guard let sceneSize = scene?.size else { return }
+        let background = SKSpriteNode(imageNamed: "background")
+        background.name = "Background"
+        let proportion = background.frame.width/background.frame.height
         
+        
+        let backgroundSize = CGSize(width: sceneSize.height * proportion, height: sceneSize.height)
+            background.size = backgroundSize
+        
+        let offset = (backgroundSize.width - sceneSize.width)/2
+        
+        let backgroundPosition = CGPoint(x: idealPosX + offset, y: 0)
+        background.position = backgroundPosition
+        
+        addChild(background)
+        backgroundsCount += 1
+    }
+    
+    func animateBackground() {
+        self.enumerateChildNodes(withName: "Background") { node, error in
+            node.position.x -= 2
+            if node.position.x + node.frame.width/2 < ((self.scene?.frame.width ?? 0)/2) + 2 && self.backgroundsCount < 2 {
+                if let sceneSize = self.scene?.frame.size {
+                    self.createBackground(idealPosX: sceneSize.width)
+                }
+            }
+            else if node.position.x + node.frame.width/2 < -(self.scene?.frame.width ?? 0)/2 {
+                node.removeFromParent()
+                self.backgroundsCount -= 1
+            }
+        }
     }
     
     override func update(_ currentTime: TimeInterval) {
-//        if leftMoveIsPressed == true {
-//            let moveUp = SKAction.move(by: CGVector(dx: -4, dy: 0), duration: 0.1)
-//            let sequence = SKAction.sequence([moveUp])
-//            bilbo.run(sequence)
-//            }
-//
-//           if rightMoveIsPressed == true {
-//            let moveUp = SKAction.move(by: CGVector(dx: 4, dy: 0), duration: 0.1)
-//            let sequence = SKAction.sequence([moveUp])
-//            bilbo.run(sequence)
-//            }
-//        self.camera?.position = bilbo.position
+        // Called before each frame is rendered
+        animateBackground()
     }
 }
