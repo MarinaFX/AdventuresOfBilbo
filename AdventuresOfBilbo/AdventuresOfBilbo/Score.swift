@@ -9,7 +9,7 @@ import SpriteKit
 //MARK:- Score Class
 
 class HudNode : SKNode {
-    private let scoreKey = "RAINCAT_HIGHSCORE"
+    private let scoreKey = "RUNCAT_HIGHSCORE"
     private let scoreNode = SKLabelNode(fontNamed: "PixelDigivolve")
     private(set) var score : Int = 0
     private var highScore : Int = 0
@@ -23,12 +23,12 @@ class HudNode : SKNode {
         
         scoreNode.text = "\(score)"
         scoreNode.fontSize = 40
-        scoreNode.position = CGPoint(x: -350, y: 150)
+        scoreNode.position = CGPoint(x: -330, y: 140)
         scoreNode.zPosition = 5
         
         addChild(scoreNode)
     }
-    public func addPoint() {
+    func addPoint() {
         score += 1
         
         updateScoreboard()
@@ -43,7 +43,6 @@ class HudNode : SKNode {
                 showingHighScore = true
                 
                 scoreNode.run(SKAction.scale(to: 1.5, duration: 0.25))
-                scoreNode.fontColor = SKColor.yellow
             }
         }
     }
@@ -58,6 +57,7 @@ class HudNode : SKNode {
             
             scoreNode.run(SKAction.scale(to: 1.0, duration: 0.25))
             scoreNode.fontColor = SKColor.white
+            
         }
     }
     
