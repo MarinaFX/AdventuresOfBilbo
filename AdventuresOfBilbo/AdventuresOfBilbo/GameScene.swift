@@ -9,7 +9,7 @@ import SpriteKit
 import GameplayKit
 import UIKit
 
-    //MARK: - GameScene Class
+//MARK: - GameScene Class
 
 class GameScene: SKScene {
     
@@ -39,7 +39,7 @@ class GameScene: SKScene {
         startCount()
     }
     
-    //MARK:- HUD Score
+    //MARK:- Hud Score
     private var score = HudNode()
     var totalTime = Timer()
     var timeInicial = 0
@@ -50,18 +50,22 @@ class GameScene: SKScene {
     @objc func addCounter(){
         score.addPoint()
     }
-   
-    //MARK: Cat Jump
+    
+    //MARK:- Bilbo's Movement
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if touches.first != nil {
-            if bilbo.position.y < originalBilboPosY {
-                bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 140))
-            }
+        let originalBilboPosY = floor.position.y + floor.frame.size.height/2 + bilbo.frame.size.height/2
+        if bilbo.position.y < originalBilboPosY {
+            bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 140))
+        }
+    }
+    func updatePlayer () {
+        let originalBilboPosY = floor.position.y + floor.frame.size.height/2 + bilbo.frame.size.height/2
+        if bilbo.position.y < originalBilboPosY {
+            bilbo.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 140))
         }
     }
     
-    //MARK: GameScene Functions
-    
+    //MARK:- GameScene Functions
     func setSceneryPhysics() {
         //setting floor physics body
         let floorPhysicsBody = SKPhysicsBody(rectangleOf: self.floor.frame.size)
@@ -125,7 +129,7 @@ class GameScene: SKScene {
         
         
         let backgroundSize = CGSize(width: sceneSize.height * proportion, height: sceneSize.height)
-            background.size = backgroundSize
+        background.size = backgroundSize
         
         let offset = (backgroundSize.width - sceneSize.width)/2
         
