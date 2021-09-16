@@ -23,7 +23,7 @@ class HudNode : SKNode {
         
         scoreNode.text = "\(score)"
         scoreNode.fontSize = 40
-        scoreNode.position = CGPoint(x: -330, y: 140)
+        scoreNode.position = CGPoint(x: 0, y: 140)
         scoreNode.zPosition = 5
         
         addChild(scoreNode)
