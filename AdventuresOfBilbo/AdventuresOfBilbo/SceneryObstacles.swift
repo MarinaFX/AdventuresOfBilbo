@@ -27,7 +27,7 @@ enum SceneryObstacles: Int {
     var size: CGSize {
         switch self {
         case .trunk:
-            return CGSize(width: 50, height: 100)
+            return CGSize(width: 50, height: 90)
         case .cucumber:
             return CGSize(width: 70, height: 20)
         case .lamp:
