@@ -23,14 +23,12 @@ class GameScene: SKScene {
     
     //MARK: GameScene Variables
     private var backgroundsCount = 0
-    private var floorSize: CGSize = CGSize(width: 0, height: 0)
-    
+    private var originalBilboPosY: CGFloat = 0
+
     //MARK:- GameScene Init
     override func didMove(to view: SKView) {
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
-        floorSize = CGSize(width: (scene?.size.width)!, height: 20)
-        
+    
         buildBilbo()
         animateBilbo()
         createScenery()
@@ -98,7 +96,7 @@ class GameScene: SKScene {
             bilboPhysicsBody.isDynamic = true
             bilboPhysicsBody.affectedByGravity = true
             bilboPhysicsBody.allowsRotation = false
-            bilboPhysicsBody.restitution = -30
+            bilboPhysicsBody.restitution = 0.0
             self.bilbo.physicsBody = bilboPhysicsBody
         }
         
@@ -119,6 +117,7 @@ class GameScene: SKScene {
         self.floor = floor
         
         addChild(self.floor)
+        originalBilboPosY = floor.position.y + floor.frame.size.height/2 + bilbo.frame.size.height/2
     }
     
     func createBackground(idealPosX: CGFloat) {
@@ -140,15 +139,22 @@ class GameScene: SKScene {
         addChild(background)
         backgroundsCount += 1
     }
+    //MARK: Obstacles
+//    func generateRandomFloorObstacles() {
+//        guard let sceneSize = scene?.size else { return }
+//        let randomTime: [TimeInterval] = [0.22, 0.56, 0.65, 0.45, 0.5, 0.3, 0.]
+//        
+//    }
     //MARK:- Animation Functions
     func animateBilbo() {
         bilbo.run(SKAction.repeatForever(SKAction.animate(with: bilboWalkingFrames, timePerFrame: 0.1, resize: false, restore: true)), withKey:"walkingInPlaceCat")
     }
     
     func animateBackground() {
+        let velocity: CGFloat = 5
         self.enumerateChildNodes(withName: "Background") { node, error in
-            node.position.x -= 5
-            if node.position.x + node.frame.width/2 < ((self.scene?.frame.width ?? 0)/2) + 2 && self.backgroundsCount < 2 {
+            node.position.x -= velocity
+            if node.position.x + node.frame.width/2 < ((self.scene?.frame.width ?? 0)/2) + velocity && self.backgroundsCount < 2 {
                 if let sceneSize = self.scene?.frame.size {
                     self.createBackground(idealPosX: sceneSize.width)
                 }
