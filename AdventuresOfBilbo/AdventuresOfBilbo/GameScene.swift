@@ -24,6 +24,7 @@ class GameScene: SKScene {
     //MARK: GameScene Variables
     private var backgroundsCount = 0
     private var originalBilboPosY: CGFloat = 0
+    private var previousTime: TimeInterval?
 
     //MARK:- GameScene Init
     override func didMove(to view: SKView) {
@@ -37,6 +38,8 @@ class GameScene: SKScene {
         addChild(score)
         createBackground(idealPosX: 0)
         startCount()
+        isUserInteractionEnabled = true
+        physicsWorld.contactDelegate = self
     }
     
     //MARK:- Hud Score
@@ -89,6 +92,7 @@ class GameScene: SKScene {
         bilbo.position = CGPoint(x: -200, y: 0)
         bilbo.zPosition = 3
         bilbo.size = CGSize(width: ((scene?.size.width)! * 0.20), height: ((scene?.size.height)! * 0.25))
+        bilbo.name = "Bilbo"
         
         //settings cat physics body
         for i in 1...numImages {
@@ -97,6 +101,8 @@ class GameScene: SKScene {
             bilboPhysicsBody.affectedByGravity = true
             bilboPhysicsBody.allowsRotation = false
             bilboPhysicsBody.restitution = 0.0
+            bilboPhysicsBody.contactTestBitMask = 0x1 << 1
+            bilboPhysicsBody.categoryBitMask = 0x1
             self.bilbo.physicsBody = bilboPhysicsBody
         }
         
@@ -140,11 +146,25 @@ class GameScene: SKScene {
         backgroundsCount += 1
     }
     //MARK: Obstacles
-//    func generateRandomFloorObstacles() {
-//        guard let sceneSize = scene?.size else { return }
-//        let randomTime: [TimeInterval] = [0.22, 0.56, 0.65, 0.45, 0.5, 0.3, 0.]
-//        
-//    }
+    func generateRandomObstacle() {
+        guard let sceneSize = scene?.size else { return }
+        let randomObstacleNumber = Int.random(in: 0...2)
+        guard let obstacle = SceneryObstacles(rawValue: randomObstacleNumber) else { return }
+        
+        let obstacleNode = SKSpriteNode(imageNamed: obstacle.imageObstacles)
+        obstacleNode.size = obstacle.size
+        let posY = obstacle.positionType == .floor ? floor.position.y + floor.frame.height/2 + obstacle.size.height/2 : 0
+        obstacleNode.position = CGPoint(x: sceneSize.width/2 + obstacleNode.size.width/2, y: posY)
+        obstacleNode.zPosition = 100000
+        obstacleNode.name = "Obstacle"
+        obstacleNode.physicsBody = SKPhysicsBody(rectangleOf: obstacleNode.size)
+        obstacleNode.physicsBody?.affectedByGravity = false
+        obstacleNode.physicsBody?.isDynamic = true
+        obstacleNode.physicsBody?.contactTestBitMask = 0x1
+        obstacleNode.physicsBody?.categoryBitMask = 0x1 << 1
+        
+        addChild(obstacleNode)
+    }
     //MARK:- Animation Functions
     func animateBilbo() {
         bilbo.run(SKAction.repeatForever(SKAction.animate(with: bilboWalkingFrames, timePerFrame: 0.1, resize: false, restore: true)), withKey:"walkingInPlaceCat")
@@ -164,10 +184,51 @@ class GameScene: SKScene {
                 self.backgroundsCount -= 1
             }
         }
+        
+        self.enumerateChildNodes(withName: "Obstacle") { node, error in
+            node.position.x -= velocity
+            if node.position.x + node.frame.width/2 < -(self.scene?.frame.width ?? 0)/2 {
+                node.removeFromParent()
+            }
+        }
     }
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
         animateBackground()
+        if let previousTime = previousTime {
+            if currentTime - previousTime >= 2 {
+                generateRandomObstacle()
+                self.previousTime = currentTime
+            }
+        } else {
+            previousTime = currentTime
+        }
+    }
+    
+    func removeBilboAndObstacles() {
+        bilbo.removeFromParent()
+        self.enumerateChildNodes(withName: "Obstacle") { node, error in
+            node.removeFromParent()
+        }
+    }
+}
+
+extension GameScene: SKPhysicsContactDelegate {
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        if contact.bodyA.node?.name == "Obstacle" && contact.bodyB.node?.name == "Bilbo" {
+            contact.bodyA.node?.removeFromParent()
+            removeBilboAndObstacles()
+            score.resetPoints()
+            buildBilbo()
+            animateBilbo()
+        } else if contact.bodyB.node?.name == "Obstacle" && contact.bodyA.node?.name == "Bilbo" {
+            contact.bodyB.node?.removeFromParent()
+            removeBilboAndObstacles()
+            score.resetPoints()
+            buildBilbo()
+            animateBilbo()
+        }
     }
 }
