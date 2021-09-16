@@ -9,18 +9,45 @@ import Foundation
 import SpriteKit
 
 enum SceneryObstacles: Int {
-    case floorObstacle1 = 1
-    case floorObstacle2 = 2
-    case airObstacle = 3
+    case trunk = 0
+    case cucumber = 1
+    case lamp = 2
     
     var imageObstacles: String {
         switch self {
-        case .floorObstacle1:
+        case .trunk:
             return "trunk"
-        case .floorObstacle2:
+        case .cucumber:
             return "cucumber"
-        case .airObstacle:
+        case .lamp:
             return "lamp"
         }
     }
+    
+    var size: CGSize {
+        switch self {
+        case .trunk:
+            return CGSize(width: 50, height: 100)
+        case .cucumber:
+            return CGSize(width: 70, height: 20)
+        case .lamp:
+            return CGSize(width: 63, height: 125)
+        }
+    }
+    
+    var positionType: PositionType {
+        switch self {
+        case .trunk:
+            return .floor
+        case .cucumber:
+            return .floor
+        case .lamp:
+            return .air
+        }
+    }
+}
+
+enum PositionType {
+    case air
+    case floor
 }
