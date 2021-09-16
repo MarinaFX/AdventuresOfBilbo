@@ -21,15 +21,24 @@ class GameScene: SKScene {
     
     var touchUP = SKSpriteNode()
     
-    //MARK: GameScene Variables
+    //MARK:- GameScene Variables
     private var backgroundsCount = 0
     private var originalBilboPosY: CGFloat = 0
     private var previousTime: TimeInterval?
 
+    //MARK:- GameScene Audio
+    private let audio = SKAudioNode(fileNamed: "Ishikari_Lore_-_Kevin_MacLeod")
+    private let playAudio = SKAction.play()
+    
     //MARK:- GameScene Init
     override func didMove(to view: SKView) {
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-    
+        
+        //set audio
+        audio.autoplayLooped = true
+        addChild(audio)
+        audio.run(playAudio)
+        
         buildBilbo()
         animateBilbo()
         createScenery()
