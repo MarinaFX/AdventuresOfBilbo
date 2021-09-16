@@ -141,9 +141,10 @@ class GameScene: SKScene {
     }
     
     func animateBackground() {
+        let velocity: CGFloat = 5
         self.enumerateChildNodes(withName: "Background") { node, error in
-            node.position.x -= 5
-            if node.position.x + node.frame.width/2 < ((self.scene?.frame.width ?? 0)/2) + 2 && self.backgroundsCount < 2 {
+            node.position.x -= velocity
+            if node.position.x + node.frame.width/2 < ((self.scene?.frame.width ?? 0)/2) + velocity && self.backgroundsCount < 2 {
                 if let sceneSize = self.scene?.frame.size {
                     self.createBackground(idealPosX: sceneSize.width)
                 }
